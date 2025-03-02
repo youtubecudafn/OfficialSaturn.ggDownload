@@ -1,69 +1,238 @@
-<!-- Add this right after your background-animation div -->
-<div class="rain"></div>
-<div class="lightning"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Script Vortex</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <div class="cyber-background"></div>
+    <div class="background-overlay"></div>
+    <div class="container">
+        <img src="Script Vortex Logo.png" alt="" class="logo fade-in">
+        <h1 class="fade-in">SCRIPT VORTEX</h1>
+        <div class="button-container">
+            <div class="card scale-up">
+                <h2>Free Version</h2>
+                <ul class="features">
+                    <li>✓ Script Execution</li>
+                    <li>✓ Basic Features</li>
+                    <li>✓ Regular Updates</li>
+                </ul>
+                <button class="button download" onclick="window.location.href='https://github.com/CuaZy210/SVbootstrapper/raw/refs/heads/main/Script%20Vortex.zip'">Download Free</button>
+                <div class="detection-rate">95% Undetected</div>
+            </div>
+            <div class="card scale-up premium">
+                <div class="premium-badge">PRO</div>
+                <h2>Premium Version</h2>
+                <ul class="features">
+                    <li>✓ All Free Features</li>
+                    <li>✓ Premium Scripts</li>
+                    <li>✓ Priority Support</li>
+                    <li>✓ Exclusive Updates</li>
+                </ul>
+                <button class="button premium-btn">Coming Soon</button>
+                <div class="detection-rate">99% Undetected</div>
+            </div>
+        </div>
+        <div class="footer slide-in">
+            <a href="https://discord.gg/gaMtMzRUb5" target="_blank" class="discord-link">
+                Join our Discord for updates and support!
+            </a>
+        </div>
+    </div>
 
-<!-- Add this right after each button -->
-<div class="card scale-up">
-    <!-- ... existing card content ... -->
-    <button class="button download" onclick="window.location.href='https://github.com/CuaZy210/SVbootstrapper/raw/refs/heads/main/Script%20Vortex.zip'">Download Free</button>
-    <div class="detection-rate">95% Undetected</div>
-</div>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #0a0a12;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+        }
 
-<div class="card scale-up premium">
-    <!-- ... existing premium card content ... -->
-    <button class="button premium-btn">Coming Soon</button>
-    <div class="detection-rate">99% Undetected</div>
-</div>
+        .cyber-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(transparent 0%, rgba(0, 255, 255, 0.2) 2%, transparent 3%),
+                linear-gradient(90deg, transparent 0%, rgba(0, 255, 255, 0.2) 2%, transparent 3%);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: -2;
+        }
 
-<!-- Add these styles to your existing style section -->
-<style>
-/* Add these new styles while keeping your existing ones */
-.rain {
-    position: fixed;
-    top: -100px;
-    left: 0;
-    width: 100%;
-    height: 120%;
-    z-index: -1;
-    background: repeating-linear-gradient(transparent, transparent 20px, rgba(0,255,255,0.1) 20px, rgba(0,255,255,0.1) 40px);
-    animation: rain 1s linear infinite;
-    transform: rotate(-20deg);
-}
+        .background-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, 
+                rgba(10, 10, 18, 0.5) 0%, 
+                rgba(10, 10, 18, 0.8) 50%, 
+                rgba(10, 10, 18, 0.95) 100%);
+            z-index: -1;
+        }
 
-.lightning {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    z-index: -1;
-    animation: lightning 8s linear infinite;
-}
+        @keyframes gridMove {
+            0% {
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                transform: translateY(50px) scale(1.1);
+            }
+        }
 
-.detection-rate {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #00ffff;
-    text-shadow: 0 0 5px rgba(0,255,255,0.5);
-}
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            max-width: 1000px;
+            margin: auto;
+        }
 
-@keyframes rain {
-    0% { transform: translateY(-100px) rotate(-20deg); }
-    100% { transform: translateY(0) rotate(-20deg); }
-}
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
 
-@keyframes lightning {
-    0% { background: transparent; }
-    2% { background: rgba(255,255,255,0.2); }
-    3% { background: transparent; }
-    6% { background: rgba(255,255,255,0.2); }
-    8% { background: transparent; }
-    100% { background: transparent; }
-}
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(0,255,255,0.5));
+        }
 
-.background-animation {
-    background: radial-gradient(circle, rgba(0,212,255,0.05) 0%, rgba(0,0,0,0.95) 100%);
-    mix-blend-mode: screen;
-}
-</style>
+        .card {
+            background: linear-gradient(145deg, #151525, #0a0a15);
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            width: 300px;
+            transition: all 0.4s ease;
+            position: relative;
+            border: 1px solid rgba(0,255,255,0.1);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 30px rgba(0,255,255,0.2);
+        }
+
+        .premium {
+            background: linear-gradient(145deg, #151525, #0a0a15);
+            border: 1px solid rgba(0,255,255,0.3);
+        }
+
+        .premium-badge {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: linear-gradient(45deg, #00ffff, #0088ff);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 14px;
+            box-shadow: 0 2px 10px rgba(0,255,255,0.3);
+        }
+
+        .features {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .features li {
+            margin: 10px 0;
+            color: #ccc;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            color: white;
+            transition: all 0.3s ease;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .download {
+            background: linear-gradient(45deg, #00ffff, #0088ff);
+            box-shadow: 0 4px 15px rgba(0,255,255,0.3);
+        }
+
+        .download:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0,255,255,0.4);
+        }
+
+        .premium-btn {
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .detection-rate {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #00ffff;
+            text-shadow: 0 0 5px rgba(0,255,255,0.5);
+        }
+
+        .footer {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,255,255,0.1);
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(0,255,255,0.1);
+        }
+
+        .discord-link {
+            color: #00ffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .discord-link:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0,255,255,0.5);
+        }
+
+        h1 {
+            font-size: 3em;
+            margin: 0;
+            background: linear-gradient(45deg, #00ffff, #0088ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 4px rgba(0,255,255,0.3));
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin: 0;
+            color: #00ffff;
+        }
+    </style>
+</body>
+</html>
