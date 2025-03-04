@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +14,7 @@
     <div class="container">
         <img src="Script Vortex Logo.png" alt="" class="logo fade-in">
         <h1 class="fade-in">Script Vortex - 1.1.0</h1>
+
         <div class="button-container">
             <div class="card scale-up">
                 <h2>Free Version</h2>
@@ -24,6 +26,7 @@
                 <button class="button download" onclick="window.location.href='https://github.com/youtubecudafn/SVbootstrapperNEW/raw/refs/heads/main/NewSVBootstrapper.zip'">Download Free</button>
                 <div class="detection-rate">95% Success Rate</div>
             </div>
+
             <div class="card scale-up premium">
                 <div class="premium-badge">Best Option!</div>
                 <h2>Premium Version</h2>
@@ -36,6 +39,47 @@
                 <div class="detection-rate">100% Success Rate</div>
             </div>
         </div>
+
+        <div class="info-container">
+            <div class="info-card scale-up">
+                <h2>Why You Should Use Script Vortex!</h2>
+                <ul class="info-list">
+                    <li>✓ High Performance & Reliability</li>
+                    <li>✓ Regular Updates & Maintenance</li>
+                    <li>✓ User-Friendly Interface</li>
+                    <li>✓ Strong Community Support</li>
+                    <li>✓ Advanced Security Features</li>
+                </ul>
+            </div>
+
+            <div class="info-card scale-up">
+                <h2>Why We Are The Best On The Market</h2>
+                <ul class="info-list">
+                    <li>✓ Industry-Leading Success Rate</li>
+                    <li>✓ Dedicated Support Team</li>
+                    <li>✓ Innovative Features</li>
+                    <li>✓ Competitive Pricing</li>
+                    <li>✓ Continuous Improvement</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="credits-section scale-up">
+            <h2>Core Development Team</h2>
+            <div class="credits-container">
+                <div class="credit-card">
+                    <div class="credit-avatar">CF</div>
+                    <h3>CudaFn</h3>
+                    <p>Lead Developer</p>
+                </div>
+                <div class="credit-card">
+                    <div class="credit-avatar">NL</div>
+                    <h3>NovaLxst</h3>
+                    <p>Core Developer</p>
+                </div>
+            </div>
+        </div>
+
         <div class="footer slide-in">
             <a href="https://discord.gg/gaMtMzRUb5" target="_blank" class="discord-link">
                 Join our Discord for updates and support!
@@ -82,12 +126,8 @@
         }
 
         @keyframes gridMove {
-            0% {
-                transform: translateY(0) scale(1);
-            }
-            100% {
-                transform: translateY(50px) scale(1.1);
-            }
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(50px) scale(1.1); }
         }
 
         .container {
@@ -95,7 +135,7 @@
             flex-direction: column;
             align-items: center;
             gap: 30px;
-            max-width: 1000px;
+            max-width: 1200px;
             margin: auto;
         }
 
@@ -104,6 +144,7 @@
             justify-content: center;
             gap: 40px;
             margin-top: 20px;
+            flex-wrap: wrap;
         }
 
         .logo {
@@ -193,6 +234,103 @@
             font-size: 14px;
             color: #00ffff;
             text-shadow: 0 0 5px rgba(0,255,255,0.5);
+        }
+
+        .info-container {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+
+        .info-card {
+            background: linear-gradient(145deg, #151525, #0a0a15);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            width: 400px;
+            transition: all 0.4s ease;
+            border: 1px solid rgba(0,255,255,0.1);
+        }
+
+        .info-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 30px rgba(0,255,255,0.2);
+        }
+
+        .info-list {
+            list-style: none;
+            padding: 0;
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .info-list li {
+            margin: 15px 0;
+            color: #ccc;
+            font-size: 1.1em;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .info-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #00ffff;
+        }
+
+        .credits-section {
+            margin-top: 40px;
+            width: 100%;
+        }
+
+        .credits-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .credit-card {
+            background: linear-gradient(145deg, #151525, #0a0a15);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(0,255,255,0.2);
+            width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .credit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,255,255,0.2);
+        }
+
+        .credit-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #00ffff, #0088ff);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #151525;
+        }
+
+        .credit-card h3 {
+            color: #00ffff;
+            margin: 10px 0;
+            font-size: 1.4em;
+        }
+
+        .credit-card p {
+            color: #ccc;
+            margin: 5px 0;
+            font-size: 1.1em;
         }
 
         .footer {
