@@ -1,511 +1,372 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Saturn.gg</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            color: #FFFFFF; /* Changed to white for better contrast */
-        }
-
-        #rainCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -3;
-            background: linear-gradient(to bottom, #000000, #444444); /* Changed to black shades */
-        }
-
-        .audio-player {
-            position: fixed;
-            bottom: 80px;
-            right: 20px;
-            z-index: 1000;
-        }
-
-        .audio-toggle {
-            background: linear-gradient(45deg, #555555, #333333);
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(255,255,255,0.5); /* Adjusted shadow for contrast */
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .audio-toggle:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(255,255,255,0.7); /* Adjusted shadow for contrast */
-        }
-
-        .music-icon {
-            font-size: 20px;
-            color: #FFFFFF; /* Changed to white for better contrast */
-        }
-
-        .cyber-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 30px 30px;
-            z-index: -2;
-            opacity: 0.3;
-        }
-
-        .background-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at 50% 50%, 
-                rgba(255,255,255,0.3) 0%, 
-                rgba(255,255,255,0.5) 100%);
-            z-index: -1;
-        }
-
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background-color: transparent;
-            color: #FFFFFF; /* Changed to white for better contrast */
-            text-align: center;
-            margin: 0;
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        .main-container {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-            position: relative;
-        }
-
-        .logo {
-            width: 150px;
-            height: auto;
-            margin: 20px auto;
-            filter: drop-shadow(0 0 10px rgba(255,255,255,0.5)); /* Updated shadow */
-        }
-
-        h1 {
-            font-size: 3em;
-            margin: 20px 0;
-            background: linear-gradient(45deg, #FFFFFF, #AAAAAA);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 2px 4px rgba(255,255,255,0.3)); /* Updated shadow */
-        }
-
-        .button-container {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 40px 0;
-            flex-wrap: wrap;
-        }
-
-        .card {
-            background: linear-gradient(145deg, #333333, #555555);
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.5); /* Updated shadow */
-            width: 300px;
-            transition: all 0.4s ease;
-            position: relative;
-            border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2); /* Updated shadow */
-        }
-
-        .premium {
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .premium-badge {
-            position: absolute;
-            top: -15px;
-            right: -15px;
-            background: linear-gradient(45deg, #AAAAAA, #888888);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 14px;
-            box-shadow: 0 2px 10px rgba(255,255,255,0.3); /* Updated shadow */
-            color: #FFFFFF; /* Changed to white */
-        }
-
-        .button {
-            display: inline-block;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 25px;
-            cursor: pointer;
-            color: #FFFFFF; /* Changed to white */
-            transition: all 0.3s ease;
-            font-size: 16px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .download {
-            background: linear-gradient(45deg, #AAAAAA, #888888);
-            box-shadow: 0 4px 15px rgba(255,255,255,0.3); /* Updated shadow */
-        }
-
-        .download:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(255,255,255,0.4); /* Updated shadow */
-        }
-
-        .premium-btn {
-            background: linear-gradient(45deg, #AAAAAA, #888888);
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .features {
-            list-style: none;
-            padding: 0;
-            text-align: left;
-            margin: 20px 0;
-        }
-
-        .features li {
-            margin: 10px 0;
-            color: #FFFFFF; /* Changed to white */
-        }
-
-        .info-container {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            margin: 40px 0;
-            flex-wrap: wrap;
-        }
-
-        .info-card {
-            background: linear-gradient(145deg, #333333, #555555);
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.5); /* Updated shadow */
-            width: 400px;
-            transition: all 0.4s ease;
-            border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-        }
-
-        .info-list {
-            list-style: none;
-            padding: 0;
-            text-align: left;
-            margin: 20px 0;
-        }
-
-        .info-list li {
-            margin: 15px 0;
-            color: #FFFFFF; /* Changed to white */
-            font-size: 1.1em;
-            padding-left: 25px;
-            position: relative;
-        }
-
-        .info-list li:before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: #FFFFFF; /* Changed to white */
-        }
-
-        .credits-section {
-            margin: 40px 0;
-        }
-
-        .credits-container {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin-top: 20px;
-            flex-wrap: wrap;
-        }
-
-        .credit-card {
-            background: linear-gradient(145deg, #333333, #555555);
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.2);
-            width: 200px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .credit-avatar {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(45deg, #AAAAAA, #888888);
-            border-radius: 50%;
-            margin: 0 auto 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: bold;
-            color: #FFFFFF; /* Changed to white */
-        }
-
-        .footer {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255,255,255,0.1);
-            padding: 15px 30px;
-            border-radius: 30px;
-            font-size: 16px;
-            box-shadow: 0 4px 15px rgba(255,255,255,0.1); /* Updated shadow */
-            backdrop-filter: blur(10px);
-            z-index: 100;
-        }
-
-        .discord-link {
-            color: #FFFFFF; /* Changed to white */
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .discord-link:hover {
-            color: #AAAAAA; /* Changed hover color */
-            text-shadow: 0 0 10px rgba(255,255,255,0.5); /* Updated shadow */
-        }
-
-        .fade-in {
-            animation: fadeIn 1s ease-in;
-        }
-
-        .scale-up {
-            animation: scaleUp 0.5s ease-out;
-        }
-
-        .slide-in {
-            animation: slideIn 0.5s ease-out;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes scaleUp {
-            from { transform: scale(0.8); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes slideIn {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-    </style>
+    <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/youtubecudafn/SaturnSetup/refs/heads/main/image.psd(3)(1)(1).png">
+    <meta content="Saturn.gg" property="og:title" />
+    <meta content="The Most Advanced Roblox Executor" property="og:description" />
+    <meta content="https://raw.githubusercontent.com/youtubecudafn/SaturnSetup/refs/heads/main/image.psd(3)(1)(1).png" property="og:image" />
+    <meta content="#4d9fff" data-react-helmet="true" name="theme-color" />
+    <meta name="twitter:card" content="summary_large_image">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-    <canvas id="rainCanvas"></canvas>
-    
-    <div class="audio-player">
-        <audio id="lofi" loop>
-            <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mp3">
-        </audio>
-        <button id="audioToggle" class="audio-toggle">
-            <span class="music-icon">🎵</span>
-        </button>
+    <div class="background-effects">
+        <div class="grid-lines"></div>
+        <div class="glow-orbs">
+            <div class="orb orb-1"></div>
+            <div class="orb orb-2"></div>
+            <div class="orb orb-3"></div>
+        </div>
     </div>
 
-    <div class="cyber-background"></div>
-    <div class="background-overlay"></div>
-    
-    <div class="main-container">
-        <div class="content-wrapper">
-            <img src="Saturn Logo.png" alt="" class="logo fade-in">
-            <h1 class="fade-in">Saturn.gg - 1.0.8</h1> <!-- Changed from Tungsten to Saturn -->
-
-            <div class="button-container">
-                <div class="card scale-up">
-                    <h2>Free Version</h2>
-                    <ul class="features">
-                        <li>✓ Script Execution</li>
-                        <li>✓ Basic Features</li>
-                        <li>✓ Regular Updates</li>
-                    </ul>
-                    <button class="button download" onclick="window.location.href='https://github.com/youtubecudafn/SaturnSetup/raw/refs/heads/main/SaturnStrapper.zip'">Download Free</button>
-                    <div class="detection-rate">96% Success Rate</div>
-                </div>
-
-                <div class="card scale-up premium">
-                    <div class="premium-badge">Best Option!</div>
-                    <h2>Premium Version</h2>
-                    <ul class="features">
-                        <li>✓ All Free Features</li>
-                        <li>✓ Priority Support</li>
-                        <li>✓ Exclusive Updates</li>
-                    </ul>
-                    <button class="button premium-btn">Coming Soon</button>
-                    <div class="detection-rate">100% Success Rate</div>
-                </div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="https://raw.githubusercontent.com/youtubecudafn/SaturnSetup/refs/heads/main/image.psd(3)(1)(1).png" alt="Saturn.gg Logo" class="brand-logo">
+                <span class="brand-text">Saturn.gg - The ultamate roblox executor</span>
             </div>
 
-            <div class="info-container">
-                <div class="info-card scale-up">
-                    <h2>Why Should you Use Saturn.gg?</h2> <!-- Changed from Tungsten to Saturn -->
-                    <ul class="info-list">
-                        <li>✓ High Performance & Reliability</li>
-                        <li>✓ Regular Updates & Maintenance</li>
-                        <li>✓ User-Friendly Interface</li>
-                        <li>✓ Strong Community Support</li>
-                        <li>✓ Safe and Organized</li>
-                    </ul>
-                </div>
-
-                <div class="info-card scale-up">
-                    <h2>Why We Are The Best On The Market</h2>
-                    <ul class="info-list">
-                        <li>✓ Industry-Leading Success Rate</li>
-                        <li>✓ Dedicated Support Team</li>
-                        <li>✓ Innovative Features</li>
-                        <li>✓ Competitive Pricing</li>
-                        <li>✓ Continuous Improvement</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-
-        <div class="bottom-content">
-            <div class="credits-section scale-up">
-                <h2>Core Development Team</h2>
-                <div class="credits-container">
-                    <div class="credit-card">
-                        <div class="credit-avatar">CF</div>
-                        <h3>CudaFn</h3>
-                        <p>Executor Developer</p>
-                    </div>
-                    <div class="credit-card">
-                        <div class="credit-avatar">JV</div>
-                        <h3>JuiceVZN</h3>
-                        <p>Api Developer</p>
-                    </div>
-                    <div class="credit-card">
-                        <div class="credit-avatar">DJ</div>
-                        <h3>Djatlasv</h3>
-                        <p>Boostrapper Developer</p>
-                    </div>
-                </div>
+            <div class="nav-menu">
+                <a href="#features" class="nav-item">
+                    <i class="fas fa-bolt"></i>
+                    <span>Features</span>
+                </a>
+                <a href="#showcase" class="nav-item">
+                    <i class="fas fa-tv"></i>
+                    <span>Showcase</span>
+                </a>
+                <a href="#pricing" class="nav-item scroll-to-pricing">
+                    <i class="fas fa-tags"></i>
+                    <span>Pricing</span>
+                </a>
+                <a href="#faq" class="nav-item">
+                    <i class="fas fa-circle-question"></i>
+                    <span>FAQ</span>
+                </a>
             </div>
 
-            <div class="footer slide-in">
-                <a href="https://discord.gg/SaturnGG" target="_blank" class="discord-link">
-                    Join our Discord for updates and support!
+            <div class="nav-actions">
+                <a href="https://discord.gg/saturngg" class="btn-discord">
+                    <i class="fab fa-discord"></i>
+                    <span>Join Discord</span>
                 </a>
             </div>
         </div>
-    </div>
+    </nav>
 
-    <script>
-        const canvas = document.getElementById('rainCanvas');
-        const ctx = canvas.getContext('2d');
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <div class="badge-glow"></div>
+                    <span class="badge-icon">🪐</span>
+                    <span class="badge-text">Most Advanced Executor</span>
+                </div>
+                <h1 class="hero-title">
+                    Next Generation
+                    <div class="gradient-text">Script Execution</div>
+                </h1>
+                <p class="hero-description">
+                    Experience unmatched power and precision with Saturn.gg's cutting-edge Roblox executor. Instant execution, unlimited possibilities.
+                </p>
+                <div class="hero-actions">
+                    <button onclick="window.location.href='https://github.com/youtubecudafn/SaturnSetup/raw/refs/heads/main/SaturnStrapper.zip';" class="btn-primary">
+                        <span>Download</span>
+                        <i class="fas fa-arrow-right"></i>
+                        <div class="btn-glow"></div>
+                    </button>
+                    <button class="btn-outline scroll-to-showcase">
+                        <i class="fas fa-play"></i>
+                        <span>Watch Demo</span>
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-bolt stat-icon"></i>
+                        <div class="stat-value">5,259,486,720</div>
+                        <div class="stat-label">Execution Time (ms)</div>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-users stat-icon"></i>
+                        <div class="stat-value">100+</div>
+                        <div class="stat-label">Active Users</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="code-preview">
+                    <div class="preview-header">
+                        <div class="window-controls">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div class="preview-tabs">
+                            <div class="tab active">main.lua</div>
+                        </div>
+                    </div>
+                    <div class="preview-editor">
+                        <div class="line-numbers">
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <span>4</span>
+                            <span>5</span>
+                            <span>6</span>
+                            <span>7</span>
+                            <span>8</span>
+                        </div>
+                        <pre class="code-content"><code>-- Initialize Saturn.gg
+local Saturn.gg = require("Saturn.gg")
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
+-- Configure settings
+Saturn.gg.config({
+    bypass = "hyperion"
+})
 
-        const raindrops = [];
-        const maxDrops = 200;
+-- Credits
+CudaFn, TheBestDragon, Djatlasv, and NovaLxst</code></pre>
+                    </div>
+                    <div class="preview-glow"></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        class Raindrop {
-            constructor() {
-                this.reset();
-            }
+    <section class="features-v2" id="features">
+        <div class="section-header">
+            <h2>Features</h2>
+            <p>Experience the power of Saturn.gg</p>
+        </div>
+        <div class="features-v2-grid">
+            <div class="feature-v2-card">
+                <div class="feature-v2-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Instant Execution</h3>
+                <p>Execute any script instantly with our optimized engine</p>
+            </div>
+            <div class="feature-v2-card">
+                <div class="feature-v2-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>Stable & Reliable</h3>
+                <p>Built for performance and stability across all games</p>
+            </div>
+            <div class="feature-v2-card">
+                <div class="feature-v2-icon">
+                    <i class="fas fa-sync"></i>
+                </div>
+                <h3>Auto Updates</h3>
+                <p>Stay up to date with automatic updates and patches</p>
+            </div>
+        </div>
+    </section>
 
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = -10;
-                this.speed = 15 + Math.random() * 10;
-                this.length = 20 + Math.random() * 30;
-                this.opacity = 0.1 + Math.random() * 0.3;
-            }
+    <section class="showcase" id="Executor Interface Preview">
+        <div class="section-header">
+            <h2>Showcase</h2>
+            <p>See how Saturn.gg looks!</p>
+        </div>
+        <div class="showcase-content">
+            <div class="video-container">
+                <iframe src="https://github.com/THEBWARE/Saturngg/releases/download/Trailers/v1.0.9.trailer.mp4" title="Saturn.gg Showcase" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+    </section>
 
-            update() {
-                this.y += this.speed;
-                if (this.y > canvas.height) {
-                    this.reset();
-                }
-            }
+    <section class="purchase" id="pricing">
+        <div class="section-header">
+            <h2>Choose Your Plan</h2>
+            <p>Select the perfect plan for you</p>
+        </div>
+        <div class="pricing-cards">
+            <div class="pricing-card">
+                <div class="card-header">
+                    <h3>Standard</h3>
+                    <div class="price">
+                        <span class="amount">$6.99</span>
+                        <span class="period">/month</span>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <ul class="features">
+                        <li><i class="fas fa-check"></i> Full Access</li>
+                        <li><i class="fas fa-check"></i> No Key System</li>
+                        <li><i class="fas fa-check"></i> Full Support</li>
+                    </ul>
+                    <a href="https://ecstxsy.sell.app/product/Saturn.gg-monthly" class="btn-primary">Buy Now! (Soon)</a>
+                </div>
+            </div>
+            <div class="pricing-card featured">
+                <div class="card-header">
+                    <span class="badge">The Best</span>
+                    <h3>Premium</h3>
+                    <div class="price">
+                        <span class="amount">$15.99</span>
+                        <span class="period">/3 months</span>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <ul class="features">
+                        <li><i class="fas fa-check"></i> Full Access</li>
+                        <li><i class="fas fa-check"></i> No Key System</li>
+                        <li><i class="fas fa-check"></i> Full Support</li>
+                    </ul>
+                    <a href="https://ecstxsy.sell.app/product/Saturn.gg-3months" class="btn-primary">Buy Now! (Soon)</a>
+                </div>
+            </div>
+            <div class="pricing-card">
+                <div class="card-header">
+                    <h3>Personal</h3>
+                    <div class="price">
+                        <span class="amount">Free</span>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <ul class="features">
+                        <li><i class="fas fa-check"></i> Partial Access</li>
+                        <li><i class="fas fa-check"></i> Authenticator System</li>
+                        <li><i class="fas fa-check"></i> Basic Support</li>
+                    </ul>
+                    <a href="https://github.com/youtubecudafn/SaturnSetup/raw/refs/heads/main/SaturnStrapper.zip" class="btn-outline">Download Now!</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            draw() {
-                ctx.beginPath();
-                ctx.moveTo(this.x, this.y);
-                ctx.lineTo(this.x, this.y + this.length);
-                ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`; // Changed stroke color to white
-                ctx.lineWidth = 1;
-                ctx.stroke();
-            }
-        }
+    <section class="reviews" id="reviews">
+        <div class="section-header">
+            <h2>Reviews</h2>
+            <p>What our users say about Saturn.gg</p>
+        </div>
+        <div class="reviews-grid">
+            <div class="review-card">
+                <div class="review-content">
+                    <p>"Best executor I've used for Blox Fruits. Scripts load instantly and never crash."</p>
+                </div>
+                <div class="review-author">
+                    <span>- moonifxed</span>
+                </div>
+            </div>
+            <div class="review-card">
+                <div class="review-content">
+                    <p>"Been using it for Pet Simulator X, works flawlessly. I recommend!"</p>
+                </div>
+                <div class="review-author">
+                    <span>- beggar089</span>
+                </div>
+            </div>
+            <div class="review-card">
+                <div class="review-content">
+                    <p>"Perfect for Arsenal. Clean UI and super stable compared to others."</p>
+                </div>
+                <div class="review-author">
+                    <span>- ArsenalKing101</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        for (let i = 0; i < maxDrops; i++) {
-            raindrops.push(new Raindrop());
-        }
+    <section class="faq" id="faq">
+        <div class="section-header">
+            <h2>FAQ</h2>
+            <p>Frequently Asked Questions</p>
+        </div>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Do you offer support?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, we provide almost 24/7 support through our Discord community.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Is it safe to use?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, Saturn.gg is designed with security in mind and regularly updated to ensure safety. Anti-virus may flag it.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>How do I get started?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>click the download button above or below to download Saturn.gg, if you have any issues/questions join the discord.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>What games are supported?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Saturn.gg supports all major Roblox games with regular updates for new releases.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>What is Saturn.gg?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Saturn.gg is a powerful script executor designed for optimal performance and reliability.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-        function animate() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="brand-icon">
+                    <img src="https://raw.githubusercontent.com/youtubecudafn/SaturnSetup/refs/heads/main/image.psd(3)(1)(1).png" alt="Saturn.gg Logo" class="footer-logo">
+                </div>
+                <h3>Saturn.gg</h3>
+                <p>Next generation Roblox script executor</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <a href="#features">Features</a>
+                    <a href="#showcase">Showcase</a>
+                    <a href="#pricing" class="scroll-to-pricing">Pricing</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Support</h4>
+                    <a href="#faq">FAQ</a>
+                    <a href="https://discord.gg/saturngg">Discord</a>
+                </div>
+            </div>
+            <div class="footer-social">
+                <h4>Connect With Us</h4>
+                <div class="social-links">
+                    <a href="https://discord.gg/saturngg" class="social-link">
+                        <i class="fab fa-discord"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p class="copyright">&copy; 2025 Saturn.gg. All rights reserved.</p>
+        </div>
+    </footer>
 
-            raindrops.forEach(drop => {
-                drop.update();
-                drop.draw();
-            });
-
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // Audio Controls
-        const audio = document.getElementById('lofi');
-        const audioToggle = document.getElementById('audioToggle');
-        let isPlaying = false;
-
-        audioToggle.addEventListener('click', () => {
-            if (isPlaying) {
-                audio.pause();
-                audioToggle.style.opacity = '0.7';
-            } else {
-                audio.play();
-                audioToggle.style.opacity = '1';
-            }
-            isPlaying = !isPlaying;
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
+
 </html>
